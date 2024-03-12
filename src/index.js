@@ -4,6 +4,9 @@ import express from 'express';
 
 import {connectDB} from './db/index.js';
 
+// routers
+import userRouter from './routes/user.route.js';
+
 
 const app = express();
 
@@ -11,6 +14,9 @@ const app = express();
 app.get('/',(req, res)=> {
     res.send('Hello World');
 })
+
+
+app.use('/api/users', userRouter);
 
 
 
