@@ -72,7 +72,9 @@ const userSignin = asyncHandler(async(req, res)=> {
 
 
 const userLogout = asyncHandler(async(req, res)=> {
-    
+    return res.status(200)
+    .clearCookie('accessToken')
+    .json(new ApiResponse(200, {}, 'Logout successfully'));
 })
 
 
