@@ -78,9 +78,14 @@ const userLogout = asyncHandler(async(req, res)=> {
 })
 
 
+const logoutUserFromAllDevices = asyncHandler(async(req, res)=> {
+
+})
+
 
 export {
     userSignup,
     userSignin,
-    userLogout
+    userLogout,
+    logoutUserFromAllDevices
 }
