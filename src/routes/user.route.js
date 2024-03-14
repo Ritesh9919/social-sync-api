@@ -6,7 +6,9 @@ import {
     userSignin,
     userLogout, 
     logoutUserFromAllDevices,
-    getUser
+    getUser,
+    getAllUsers,
+    updateUserDeatils
 } 
 from '../controllers/user.controller.js';
 import {upload} from '../middlewares/multer.middleware.js';
@@ -18,6 +20,8 @@ router.get('/logout', varifyJwt,userLogout);
 router.get('/logoout-all-devices', logoutUserFromAllDevices);
 
 router.get('/get-details/:userId',varifyJwt,getUser);
+router.get('/get-all-details', varifyJwt, getAllUsers);
+router.put('/update-details/:userId', varifyJwt, upload.single('avatar'),updateUserDeatils);
 
 
 

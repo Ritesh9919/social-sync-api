@@ -95,11 +95,54 @@ const getUser = asyncHandler(async(req,res)=> {
      
 })
 
+const getAllUsers = asyncHandler(async(req, res)=> {
+    const users = await User.find({}).select('-password');
+    if(!users) {
+        throw new ApiError(404, 'Users does not exist');
+    }
+    return res.status(200)
+    .json(new ApiResponse(200, {users:users}, 'Users details fetched successfully'));
+})
+
+const updateUserDeatils = asyncHandler(async(req, res)=> {
+    
+     const {userId} = req.params;
+     
+
+     const user = await User.findById(userId);
+     if(!user) {
+        throw new ApiError(404, 'User does not exist');
+     }
+
+     const userAvatarLocalPath = req.file?.path;
+     if(!userAvatarLocalPath) {
+        throw new ApiError(400, 'Avatar file is required');
+     }
+
+     const userAvatar = await uploadOnCloudinary(userAvatarLocalPath);
+     if(!userAvatar) {
+        throw new ApiError(400, 'Avatar file is required');
+     }
+
+     const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {$set:{avatar:userAvatar?.url}},
+        {new:true}
+     ).select('-password');
+
+     return res.status(200)
+     .json(new ApiResponse(200, {user:updatedUser}, 'User avatar successfully'));
+
+
+})
+
 
 export {
     userSignup,
     userSignin,
     userLogout,
     logoutUserFromAllDevices,
-    getUser
+    getUser,
+    getAllUsers,
+    updateUserDeatils
 }
