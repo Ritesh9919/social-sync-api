@@ -83,9 +83,23 @@ const logoutUserFromAllDevices = asyncHandler(async(req, res)=> {
 })
 
 
+const getUser = asyncHandler(async(req,res)=> {
+    const {userId} = req.params;
+     const user = await User.findById(userId).select('-password');
+     if(!user) {
+        throw new ApiError(404, 'User does not exist');
+     }
+
+     return res.status(200)
+     .json(new ApiResponse(200, {user:user}, 'User details fetched successfully'));
+     
+})
+
+
 export {
     userSignup,
     userSignin,
     userLogout,
-    logoutUserFromAllDevices
+    logoutUserFromAllDevices,
+    getUser
 }
