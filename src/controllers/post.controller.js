@@ -102,7 +102,20 @@ const getAllPostByUser = asyncHandler(async(req, res)=> {
 })
 
 const deletePost = asyncHandler(async(req, res)=> {
+     const {postId} = req.params;
+     const post = await Post.findById(postId);
+     if(!post) {
+        throw new ApiError(404, 'Post does not exist');
+     }
 
+     if(post.owner.equals(req.user._id)) {
+        await Post.findByIdAndDelete(postId, {new:true});
+     }else{
+        throw new ApiError(401, "Unauthorized to delete this post");
+     }
+
+     return res.status(200)
+     .json(new ApiResponse(200, {post}, 'Post deleted successfully'));
 })
 
 const updatePost = asyncHandler(async(req, res)=> {
