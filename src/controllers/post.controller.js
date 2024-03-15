@@ -119,7 +119,28 @@ const deletePost = asyncHandler(async(req, res)=> {
 })
 
 const updatePost = asyncHandler(async(req, res)=> {
+    const {postId} = req.params;
+    const {caption} = req.body;
+    if(!caption) {
+        throw new ApiError(400, 'Caption is required');
+    }
+    const post = await Post.findById(postId);
+    if(!post) {
+       throw new ApiError(404, 'Post does not exist');
+    }
 
+    if(!post.owner.equals(req.user._id)) {
+        throw new ApiError(401, "Unauthorized to delete this post");
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        {$set:{caption:caption}},
+        {new:true}
+    )
+
+    return res.status(200)
+    .json(new ApiResponse(200, {post:updatedPost}, 'Post updated successfully'));
 })
 
 
