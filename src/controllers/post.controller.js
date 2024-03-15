@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import {Post} from '../models/post.model.js';
 import {ApiError,ApiResponse,asyncHandler,uploadOnCloudinary} from '../utils/index.js';
 
@@ -32,7 +33,35 @@ const createPost = asyncHandler(async(req, res)=> {
 
 
 const getPostByUser = asyncHandler(async(req, res)=> {
+    const {postId} = req.params;
 
+   const post = await Post.aggregate([
+    {
+        $match:{
+            _id:new mongoose.Types.ObjectId(postId)
+        }
+    },
+    {
+        $lookup:{
+            from:'users',
+            localField:'owner',
+            foreignField:'_id',
+            as:'owner',
+            pipeline:[
+                {
+                    $project:{
+                        name:1,
+                        email:1
+                    }
+                }
+            ]
+
+        }
+    }
+   ]);
+   
+    return res.status(200)
+    .json(new ApiResponse(200, {post:post[0]}, 'Post fetched successfully'));
 })
 
 const getAllPostByUser = asyncHandler(async(req, res)=> {
