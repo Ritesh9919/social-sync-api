@@ -58,7 +58,24 @@ const toggleCommentLike = asyncHandler(async(req, res)=> {
 })
 
 const getPostLike = asyncHandler(async(req, res)=> {
-    
+    const {postId} = req.params;
+     const post = await Post.findById(postId);
+     if(!post) {
+        throw new ApiError(404, 'Post does not exist');
+     }
+
+     const likes = await Like.find({post:postId}).populate({
+        path:'likedBy',
+        select:'name email, avatar'
+     })
+     
+
+     if(!likes) {
+        throw new ApiError(404, 'Like does not exist');
+     }
+
+     return res.status(200)
+     .json(new ApiResponse(200, {likes}, 'Like fetched successfully'));
 })
 
 const getCommentLike = asyncHandler(async(req, res)=> {
