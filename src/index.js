@@ -9,6 +9,7 @@ import {connectDB} from './db/index.js';
 import userRouter from './routes/user.route.js';
 import postRouter from './routes/post.route.js';
 import commentRouter from './routes/comment.route.js';
+import likeRouter from './routes/like.route.js';
 
 
 const app = express();
@@ -42,6 +43,7 @@ app.get('/',(req, res)=> {
 app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
+app.use('/api/likes', likeRouter);
 
 
 
