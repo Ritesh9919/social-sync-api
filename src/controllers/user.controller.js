@@ -36,7 +36,7 @@ const userSignup = asyncHandler(async(req, res)=> {
 
 
     return res.status(201)
-    .json(new ApiResponse(200, createdUser, 'User signup successfully'));
+    .json(new ApiResponse(200, {user:createdUser}, 'User signup successfully'));
 
 
 })
