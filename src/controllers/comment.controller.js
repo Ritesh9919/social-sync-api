@@ -89,7 +89,30 @@ const deleteComment = asyncHandler(async(req, res)=> {
 
 
 const updateComment = asyncHandler(async(req, res)=> {
-    
+    const {commentId} = req.params;
+    const {content} = req.body;
+     if(!content){
+        throw new ApiError(400, 'Content is required');
+     }
+ 
+    const comment = await Comment.findById(commentId);
+
+    if(!comment) {
+        throw new ApiError(404, 'Comment does not exist');
+    }
+
+    if(!comment.owner.equals(req.user._id)) {
+        throw new ApiError(401, 'Unauthorized to update this comment');
+    }
+
+    const updatedComment = await Comment.findByIdAndUpdate(
+        commentId,
+        {$set:{content}},
+        {new:true}
+    );
+
+    return res.status(200)
+    .json(new ApiResponse(200, {comment:updatedComment}, 'Comment updated successfully'));
 })
 
 
