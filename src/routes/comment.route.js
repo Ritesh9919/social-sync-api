@@ -6,7 +6,7 @@ import {varifyJwt} from '../middlewares/auth.middleware.js';
 
 router.post('/:postId', varifyJwt, addComment);
 router.get('/:postId', varifyJwt, getComment);
-router.delete('/:commemtId', varifyJwt, deleteComment);
+router.delete('/:commentId', varifyJwt, deleteComment);
 router.put('/:commentId', varifyJwt,updateComment);
 
 
