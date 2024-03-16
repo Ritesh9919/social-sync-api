@@ -79,7 +79,24 @@ const getPostLike = asyncHandler(async(req, res)=> {
 })
 
 const getCommentLike = asyncHandler(async(req, res)=> {
-    
+    const {commentId} = req.params;
+     const comment = await Comment.findById(commentId);
+     if(!comment) {
+        throw new ApiError(404, 'Comment does not exist');
+     }
+
+     const likes = await Like.find({comment:commentId}).populate({
+        path:'likedBy',
+        select:'name email, avatar'
+     })
+     
+
+     if(!likes) {
+        throw new ApiError(404, 'Like does not exist');
+     }
+
+     return res.status(200)
+     .json(new ApiResponse(200, {likes}, 'Like fetched successfully'));
 })
 
 

@@ -6,5 +6,6 @@ import {varifyJwt} from '../middlewares/auth.middleware.js';
 router.post('/post/:postId', varifyJwt, togglePostLike);
 router.post('/comment/:commentId', varifyJwt, toggleCommentLike);
 router.get('/post/:postId', varifyJwt, getPostLike);
+router.get('/comment/:commentId', varifyJwt, getCommentLike);
 
 export default router;
