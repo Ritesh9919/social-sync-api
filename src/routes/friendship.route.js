@@ -10,7 +10,7 @@ import {
 }
 from '../controllers/friendship.controller.js';
 
-router.get('/get-friends/:friendId', varifyJwt, getUserFriends);
+router.get('/get-friends/:userId', varifyJwt, getUserFriends);
 router.get('/get-pending-requests', varifyJwt, getPendingFriendRequest);
 router.post('/toggle-friendship/:friendId', varifyJwt, toggleFriendship);
 router.post('/response-to-request', varifyJwt, acceptOrRejectFriendRequest);

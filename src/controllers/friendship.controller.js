@@ -1,10 +1,32 @@
 import mongoose,{isValidObjectId} from 'mongoose';
 import { Friendship } from '../models/friendship.model.js';
+import { User } from '../models/user.model.js';
 import {ApiError,ApiResponse,asyncHandler} from '../utils/index.js';
 
 
 const getUserFriends = asyncHandler(async(req, res)=> {
+      const {userId} = req.params;
+      if(!isValidObjectId(userId)) {
+        throw new ApiError(400, 'Invalid user id');
+      }
 
+      const user = await User.findById(userId);
+      if(!user) {
+        throw new ApiError(404, 'User does not exist');
+      }
+
+      //Find friendships where the user is either userId or friendId
+      const friendships = await Friendship.find({$or:[{requester:userId},{recipient:userId}]});
+
+      // Extract friendIds from friendships
+      const friendIds = friendships.map(friendship => {
+        return userId == friendship.requester ? friendship.recipient : friendship.requester;
+      });
+
+      // Find users with these friendIds
+    const friends = await User.find({ _id: { $in: friendIds } });
+    return res.status(200)
+    .json(new ApiResponse(200, {friends},'Friends fetched successfully'));
 })
 
 
