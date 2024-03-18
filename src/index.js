@@ -10,7 +10,7 @@ import userRouter from './routes/user.route.js';
 import postRouter from './routes/post.route.js';
 import commentRouter from './routes/comment.route.js';
 import likeRouter from './routes/like.route.js';
-import friendshipRouter from './routes/friendship.route.js';
+
 
 
 const app = express();
@@ -45,7 +45,7 @@ app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/likes', likeRouter);
-app.use('/api/friends', friendshipRouter);
+
 
 
 
