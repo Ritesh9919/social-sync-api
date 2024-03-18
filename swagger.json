@@ -6,7 +6,7 @@
   },
   "server": [
     {
-      "url": "localhost:8000"
+      "url": "https://social-sync-api.onrender.com"
     }
   ],
   "components": {
@@ -579,6 +579,20 @@
           "summary": "Send reset password otp",
           "description": "Send reset password otp",
           "security": [{ "JWT": {} }],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
 
           "responses": {
             "200": {
