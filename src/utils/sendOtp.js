@@ -5,8 +5,8 @@ export const sendOtp = async(email,otp)=> {
         host: "sandbox.smtp.mailtrap.io",
         port: 2525,
         auth: {
-          user: "97ab2c3926377b",
-          pass: "b3e70b839f4354"
+          user: process.env.MAILTRAP_USER,
+          pass: process.env.MAILTRAP_PASSWORD
         }
       });
 
