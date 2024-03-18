@@ -1,5 +1,5 @@
 import {User} from '../models/user.model.js';
-import {asyncHandler, ApiError,ApiResponse,uploadOnCloudinary} from '../utils/index.js';
+import {asyncHandler, ApiError,ApiResponse,uploadOnCloudinary,generateOtp} from '../utils/index.js';
 
 
 
@@ -137,6 +137,8 @@ const updateUserDeatils = asyncHandler(async(req, res)=> {
 })
 
 
+
+
 export {
     userSignup,
     userSignin,
@@ -145,4 +147,5 @@ export {
     getUser,
     getAllUsers,
     updateUserDeatils
+
 }

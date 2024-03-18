@@ -21,6 +21,13 @@ const userSchema = new mongoose.Schema({
     avatar:{
         type:String,
         required:true
+    },
+    otp:{
+        type:String,
+        
+    },
+    otpExpires:{
+        type:Date
     }
 },{timestamps:true});
 
