@@ -45,7 +45,7 @@ cloudinary.config({
 
 
 app.get('/',(req, res)=> {
-    res.send('<h1>E-commerce API</h1><a href="https://social-sync-api.onrender.com/api/docs">Documentaion</a>');
+    res.send('<h1>SOCIAL-SYNC-API</h1><a href="https://social-sync-api.onrender.com/api/docs">Documentaion</a>');
     
 })
 
