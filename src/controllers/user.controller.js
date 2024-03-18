@@ -131,7 +131,7 @@ const updateUserDeatils = asyncHandler(async(req, res)=> {
      ).select('-password');
 
      return res.status(200)
-     .json(new ApiResponse(200, {user:updatedUser}, 'User avatar successfully'));
+     .json(new ApiResponse(200, {user:updatedUser}, 'User avatar updated successfully'));
 
 
 })

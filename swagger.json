@@ -1,0 +1,637 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SOCIAL-SYN-API",
+    "description": "API for social-media"
+  },
+  "server": [
+    {
+      "url": "localhost:8000"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "in": "header",
+        "name": "Authorization",
+        "type": "apiKey"
+      }
+    }
+  },
+  "paths": {
+    "/api/users/signup": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Signup User",
+        "description": "Signup User",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "avatar":{
+                    "type":"string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User signup successfully"
+          },
+          "400": {
+            "description": "All fields are required"
+          },
+          "409": {
+            "description": "User already exist"
+          }
+        }
+      }
+    },
+    "/api/users/signin": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Signin User ",
+        "description": "Singin to get token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User signin in successfully"
+          },
+          "400": {
+            "description": "Both fields are required"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "401": {
+            "description": "Invalid Credential"
+          }
+        }
+      }
+    },
+    "/api/users/logout": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Logout User ",
+        "description": "Logout User",
+        "security": [{ "JWT": {} }],
+        "responses": {
+          "200": {
+            "description": "Logout successfully"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user by user id",
+        "description": "Get user by user id",
+        "security": [{ "JWT": {} }],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "User fetched successfully"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "summary": "Update user avatar",
+        "description": "Update user avatar",
+        "security": [{ "JWT": {} }],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "user id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "User avatar apdated successfully"
+          },
+          "400": {
+            "description": "Avatar file is required"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all users ",
+        "description": "Get all users",
+        "security": [{ "JWT": {} }],
+
+        "responses": {
+          "200": {
+            "description": "Users fetched successfully"
+          },
+
+          "404": {
+            "description": "User does not exist"
+          },
+          "401": {
+            "description": "Invalid Credential"
+          }
+        }
+      }
+    },
+    "/api/posts": {
+      "post": {
+        "tags": ["Posts"],
+        "summary": "Create post",
+        "description": "Create post",
+        "security": [{ "JWT": {} }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "caption": {
+                    "type": "string"
+                  },
+                  "imageUrl":{
+                    "type":"string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post created successfully"
+          },
+          "400": {
+            "description": "Caption is required",
+            "401": {
+              "description": "Invalid Credential"
+            }
+          }
+        }
+      },
+
+      "get": {
+        "tags": ["Posts"],
+        "summary": "Get all post by user ",
+        "description": "Get all post by user",
+        "security": [{ "JWT": {} }],
+        "responses": {
+          "200": {
+            "description": "Post fetched successfully"
+          },
+          "404": {
+            "description": "Post does not exist"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      }
+    },
+    "/api/post/{postId}": {
+      "get": {
+        "tags": ["Posts"],
+        "summary": "Get post by post id",
+        "description": "Get post by post id",
+        "security": [{ "JWT": {} }],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "post id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Post fetched successfully"
+          },
+          "404": {
+            "description": "Post does not exist"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      },
+
+      "delete": {
+        "tags": ["Posts"],
+        "summary": "Delete by post id",
+        "description": "Delete post by post id",
+        "security": [{ "JWT": {} }],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "post id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Post deleted successfully"
+          },
+          "404": {
+            "description": "Post does not exist"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      },
+
+      "put": {
+        "tags": ["Posts"],
+        "summary": "Update post",
+        "description": "Update post",
+        "security": [{ "JWT": {} }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "caption": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post updated successfully"
+          },
+          "400": {
+            "description": "Caption is required",
+            "401": {
+              "description": "Unauthorized request"
+            }
+          }
+        }
+      }
+    },
+    "/api/comments/{postId}": {
+      "post": {
+        "tags": ["Comments"],
+        "summary": "Add comment",
+        "description": "Add comment on post",
+        "security": [{ "JWT": {} }],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "post id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comment added successfully"
+          },
+          "400": {
+            "description": "Content is required",
+            "401": {
+              "description": "Unauthorized request"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Comments"],
+        "summary": "get comment",
+        "description": "Get comment on post",
+        "security": [{ "JWT": {} }],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "post id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Comment fetched successfully"
+          },
+          "401": {
+            "description": "Unauthorized request"
+          }
+        }
+      }
+      
+    },
+    "/api/comments/{commentId}": {
+        "delete": {
+          "tags": ["Comments"],
+          "summary": "Delete comment by comment id",
+          "description": "Delete comment by comment id",
+          "security": [{ "JWT": {} }],
+          "parameters": [
+            {
+              "name": "commentId",
+              "in": "path",
+              "description": "user id",
+              "required": true,
+              "type": "string"
+            }
+          ],
+  
+          "responses": {
+            "200": {
+              "description": "Comment deleted successfully"
+            },
+            "404": {
+              "description": "Comment does not exist"
+            },
+            "401": {
+              "description": "Unauthorized request"
+            }
+          }
+        },
+        "put": {
+            "tags": ["Comments"],
+            "summary": "update comment by comment id",
+            "description": "update comment by comment id",
+            "security": [{ "JWT": {} }],
+            "parameters": [
+              {
+                "name": "commentId",
+                "in": "path",
+                "description": "user id",
+                "required": true,
+                "type": "string"
+              }
+            ],
+    
+            "responses": {
+              "200": {
+                "description": "Comment updated successfully"
+              },
+              "404": {
+                "description": "Comment does not exist"
+              },
+              "401": {
+                "description": "Unauthorized request"
+              }
+            }
+          }
+    },
+    "/api/likes/post/{postId}": {
+        "post": {
+          "tags": ["Likes"],
+          "summary": "Toggle like on post",
+          "description": "Toggle like on post",
+          "security": [{ "JWT": {} }],
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "description": "user id",
+              "required": true,
+              "type": "string"
+            }
+          ],
+  
+          "responses": {
+            "201": {
+              "description": "Toggled like on post"
+            },
+            "404": {
+              "description": "post does not exist"
+            },
+            "401": {
+              "description": "Unauthorized request"
+            }
+          }
+        },
+        "get": {
+            "tags": ["Likes"],
+            "summary": "Get like on post",
+            "description": "Get like on post",
+            "security": [{ "JWT": {} }],
+            "parameters": [
+              {
+                "name": "postId",
+                "in": "path",
+                "description": "user id",
+                "required": true,
+                "type": "string"
+              }
+            ],
+    
+            "responses": {
+              "200": {
+                "description": "Like fetched successfully"
+              },
+              "404": {
+                "description": "like does not exist"
+              },
+              "401": {
+                "description": "Unauthorized request"
+              }
+            }
+          }
+    },
+    "/api/likes/comment/{commentId}": {
+        "post": {
+          "tags": ["Likes"],
+          "summary": "Toggle like on comment",
+          "description": "Toggle like on comment",
+          "security": [{ "JWT": {} }],
+          "parameters": [
+            {
+              "name": "commentId",
+              "in": "path",
+              "description": "user id",
+              "required": true,
+              "type": "string"
+            }
+          ],
+  
+          "responses": {
+            "201": {
+              "description": "Toggled like on comment"
+            },
+            "404": {
+              "description": "Comment does not exist"
+            },
+            "401": {
+              "description": "Unauthorized request"
+            }
+          }
+        },
+        "get": {
+            "tags": ["Likes"],
+            "summary": "Get like on comment",
+            "description": "Get like on comment",
+            "security": [{ "JWT": {} }],
+            "parameters": [
+              {
+                "name": "commentId",
+                "in": "path",
+                "description": "user id",
+                "required": true,
+                "type": "string"
+              }
+            ],
+    
+            "responses": {
+              "200": {
+                "description": "Like fetched successfully"
+              },
+              "404": {
+                "description": "like does not exist"
+              },
+              "401": {
+                "description": "Unauthorized request"
+              }
+            }
+          }
+    },
+    "/api/otp/send": {
+        "post": {
+          "tags": ["Reset Password"],
+          "summary": "Send reset password otp",
+          "description": "Send reset password otp",
+          "security": [{ "JWT": {} }],
+
+          "responses": {
+            "200": {
+              "description": "Otp send successfully"
+            ,
+              "401": {
+                "description": "Unauthorized request"
+              }
+            }
+          }
+        }
+    },
+    "/api/otp/reset-password": {
+        "post": {
+          "tags": ["Reset Password"],
+          "summary": "Reset Password",
+          "description": "Reset password by otp",
+          "security": [{ "JWT": {} }],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "otp": {
+                        "type": "string"
+                      },
+                      "newPassword": {
+                        "type": "string"
+                      }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Password reset successfully"
+            },
+            "404":{
+                "description":"User does not exist"
+            },
+            "400": {
+              "description": "Invalid or expired otp",
+              "401": {
+                "description": "Invalid Credential"
+              }
+            }
+          }
+        }
+    }
+  }
+}

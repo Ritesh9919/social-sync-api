@@ -2,6 +2,10 @@ import dotenv from 'dotenv';
 dotenv.config()
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import swagger from 'swagger-ui-express';
+import apiDocs from '../swagger.json' assert {type:'json'}
+
 
 import {connectDB} from './db/index.js';
 
@@ -14,8 +18,14 @@ import resetPasswordRouter from './routes/reset.password.route.js';
 
 
 
+
 const app = express();
 
+// define swagger documentation
+app.use('/api/docs', swagger.serve,swagger.setup(apiDocs));
+
+
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
@@ -35,7 +45,7 @@ cloudinary.config({
 
 
 app.get('/',(req, res)=> {
-    res.send('Hello World');
+    res.send('<h1>E-commerce API</h1><a href="api/docs">Documentaion</a>');
     
 })
 

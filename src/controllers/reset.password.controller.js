@@ -27,7 +27,7 @@ const resetPassword = asyncHandler(async(req, res)=> {
      }
 
      if(user.otp !== otp || user.otpExpires < Date.now()) {
-        throw new ApiError(400, 'Ivalid or expired otp');
+        throw new ApiError(400, 'Invalid or expired otp');
      }
 
      user.password = newPassword;
